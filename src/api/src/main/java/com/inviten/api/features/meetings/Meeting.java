@@ -37,7 +37,7 @@ public class Meeting {
         this.time = time;
     }
 
-    public List<Member> getParticipants() {return participants;}
+    public List<Member> getParticipants() { return participants; }
     public void setParticipants(List<Member> participants) {
         this.participants = participants;
     }
