@@ -1,6 +1,5 @@
 package com.inviten.api.features.meetings;
 
-import java.util.List;
 
 public interface IMeetingRepository {
     public Meeting one(String id);
