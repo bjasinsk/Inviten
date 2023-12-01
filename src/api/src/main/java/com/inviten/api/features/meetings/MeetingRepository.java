@@ -42,7 +42,7 @@ public class MeetingRepository implements IMeetingRepository {
 
         Meeting meeting = one(meetingId);
         if (meeting == null) {
-            throw new NotFoundException("Meeting not found");
+            throw new NotFoundException();
         }
 
         List<Member> participants = meeting.getParticipants();
@@ -61,7 +61,7 @@ public class MeetingRepository implements IMeetingRepository {
     public void deleteMember(String meetingId, String phoneNumber){
         Meeting meeting = one(meetingId);
         if (meeting == null) {
-            throw new NotFoundException("Meeting not found");
+            throw new NotFoundException();
         }
 
         List<Member> participants = meeting.getParticipants();
