@@ -1,6 +1,7 @@
 package com.inviten.api.features.meetings;
 
 
+import com.inviten.api.features.meetings.placeProposal.Place;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -15,6 +16,7 @@ public class Meeting {
     private LocalDate date;
     private LocalTime time;
     private List<Member> participants;
+    private List<Place> placeProposals;
 
     @DynamoDbPartitionKey
     public String getId() {
@@ -41,4 +43,10 @@ public class Meeting {
     public void setParticipants(List<Member> participants) {
         this.participants = participants;
     }
+
+    public List<Place> getPlaceProposals() {return placeProposals;}
+    public void setPlaceProposals(List<Place> placeProposals) {
+        this.placeProposals = placeProposals;
+    }
 }
+

@@ -30,4 +30,10 @@ public class MeetingRepository implements IMeetingRepository {
         create(meeting);
         return meeting;
     }
+
+    public void put(Meeting meeting)
+    {
+        table.putItem(meeting);
+    }
+
 }

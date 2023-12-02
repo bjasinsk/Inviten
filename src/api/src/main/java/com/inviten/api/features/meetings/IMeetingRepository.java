@@ -6,4 +6,6 @@ public interface IMeetingRepository {
     public void create(Meeting meeting);
 
     public Meeting createAndSave(Meeting meeting);
+
+    public void put(Meeting meeting);
 }
