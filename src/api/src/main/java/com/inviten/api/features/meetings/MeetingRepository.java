@@ -124,4 +124,8 @@ public class MeetingRepository implements IMeetingRepository {
             table.putItem(meeting);
         }
     }
+    @Override
+    public void put(Meeting meeting) {
+        table.putItem(meeting);
+    }
 }

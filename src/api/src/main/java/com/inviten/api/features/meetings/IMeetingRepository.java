@@ -11,4 +11,6 @@ public interface IMeetingRepository {
     public void addMember(String meetingId, Member member);
 
     public void deleteMember(String meetingId, String phoneNumber);
+
+    public void put(Meeting meeting);
 }
