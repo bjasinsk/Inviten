@@ -12,6 +12,8 @@ import java.time.LocalTime;
 @DynamoDbBean
 public class Meeting {
     private String id;
+
+    private String name;
     private LocalDate date;
     private LocalTime time;
     private List<Member> participants;
@@ -25,6 +27,9 @@ public class Meeting {
         this.id = id;
     }
 
+    public String getName(){ return name; }
+
+    public void setName(String name) { this.name = name; }
     public LocalDate getDate() {
         return date;
     }
