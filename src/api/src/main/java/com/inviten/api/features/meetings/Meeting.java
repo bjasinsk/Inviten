@@ -20,10 +20,10 @@ public class Meeting {
     private LocalTime time;
     private List<Member> participants;
     private List<DateProposal> dateProposals;
-    private boolean isDateChosen = false;
     private List<Place> placeProposals;
 
     private boolean isPlaceChosen = false;
+    private boolean isDateChosen = false;
 
     private Place place;
 
