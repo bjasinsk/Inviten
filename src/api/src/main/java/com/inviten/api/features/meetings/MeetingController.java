@@ -11,9 +11,9 @@ public class MeetingController {
         this.meetingRepository = meetingRepository;
     }
 
-    @GetMapping("/meetings/{id}")
-    Meeting one(@PathVariable String id) {
-        return meetingRepository.one(id);
+    @GetMapping("/meetings/{meetingId}")
+    Meeting one(@PathVariable String meetingId) {
+        return meetingRepository.one(meetingId);
     }
 
     @PostMapping("/meetings")
@@ -21,13 +21,13 @@ public class MeetingController {
         return meetingRepository.createAndSave(meeting);
     }
 
-    @PutMapping("meetings/{id}/users")
-    public void addMember(@PathVariable String id, @RequestBody Member member){
-        meetingRepository.addMember(id, member);
+    @PutMapping("meetings/{meetingId}/users")
+    public void addMember(@PathVariable String meetingId, @RequestBody Member member){
+        meetingRepository.addMember(meetingId, member);
     }
 
-    @DeleteMapping("meetings/{id}/users/{phoneNumber}")
-    public void deleteMember(@PathVariable String id, @PathVariable String phoneNumber){
-        meetingRepository.deleteMember(id, phoneNumber);
+    @DeleteMapping("meetings/{meetingId}/users/{phoneNumber}")
+    public void deleteMember(@PathVariable String meetingId, @PathVariable String phoneNumber){
+        meetingRepository.deleteMember(meetingId, phoneNumber);
     }
 }
