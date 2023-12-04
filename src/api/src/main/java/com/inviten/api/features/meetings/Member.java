@@ -2,17 +2,18 @@ package com.inviten.api.features.meetings;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+
 @DynamoDbBean
 public class Member {
 
     private String phoneNumber;
-    private String role ;
+    private String role;
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String id) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber ;
     }
 

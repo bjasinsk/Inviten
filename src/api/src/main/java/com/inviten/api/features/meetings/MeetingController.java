@@ -2,6 +2,7 @@ package com.inviten.api.features.meetings;
 
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 public class MeetingController {
     private final IMeetingRepository meetingRepository;
@@ -10,13 +11,23 @@ public class MeetingController {
         this.meetingRepository = meetingRepository;
     }
 
-    @GetMapping("/meetings/{id}")
-    Meeting one(@PathVariable String id) {
-        return meetingRepository.one(id);
+    @GetMapping("/meetings/{meetingId}")
+    Meeting one(@PathVariable String meetingId) {
+        return meetingRepository.one(meetingId);
     }
 
     @PostMapping("/meetings")
-    Meeting createAndSave(@RequestBody Meeting meeting){
-        return meetingRepository.createAndSave(meeting) ;
+    Meeting createAndSave(@RequestBody Meeting meeting) {
+        return meetingRepository.createAndSave(meeting);
+    }
+
+    @PutMapping("meetings/{meetingId}/users")
+    public void addMember(@PathVariable String meetingId, @RequestBody Member member){
+        meetingRepository.addMember(meetingId, member);
+    }
+
+    @DeleteMapping("meetings/{meetingId}/users/{phoneNumber}")
+    public void deleteMember(@PathVariable String meetingId, @PathVariable String phoneNumber){
+        meetingRepository.deleteMember(meetingId, phoneNumber);
     }
 }
