@@ -1,5 +1,6 @@
 package com.inviten.api.features.meetings;
 
+import com.inviten.api.features.members.Member;
 import org.springframework.web.bind.annotation.*;
 
 

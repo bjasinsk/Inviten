@@ -1,4 +1,4 @@
-package com.inviten.api.features.users;
+package com.inviten.api.features.userMeetings;
 
 import com.inviten.api.features.meetings.Meeting;
 import org.springframework.stereotype.Service;
@@ -6,14 +6,11 @@ import software.amazon.awssdk.enhanced.dynamodb.*;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.Condition;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class UserMeetingsRepository implements IUserMeetingsRepository {

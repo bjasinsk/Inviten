@@ -1,4 +1,4 @@
-package com.inviten.api.features.meetings;
+package com.inviten.api.features.members;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 

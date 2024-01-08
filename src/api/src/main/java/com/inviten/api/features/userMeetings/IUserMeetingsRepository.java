@@ -1,4 +1,4 @@
-package com.inviten.api.features.users;
+package com.inviten.api.features.userMeetings;
 
 import com.inviten.api.features.meetings.Meeting;
 

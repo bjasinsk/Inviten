@@ -1,7 +1,8 @@
 package com.inviten.api.features.meetings;
 
-import com.inviten.api.features.users.UserMeetings;
-import com.inviten.api.features.users.UserMeetingsRepository;
+import com.inviten.api.features.members.Member;
+import com.inviten.api.features.userMeetings.UserMeetings;
+import com.inviten.api.features.userMeetings.UserMeetingsRepository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
