@@ -32,7 +32,6 @@ public class MeetingRepository implements IMeetingRepository {
 
         return table.getItem(key);
     }
-
     @Override
     public void create(Meeting meeting) {
         table.putItem(meeting);
