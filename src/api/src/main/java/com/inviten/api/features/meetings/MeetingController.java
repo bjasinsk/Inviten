@@ -1,5 +1,6 @@
 package com.inviten.api.features.meetings;
 
+import com.inviten.api.features.users.User;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -11,7 +12,7 @@ public class MeetingController {
         this.meetingRepository = meetingRepository;
     }
 
-    @GetMapping("/meetings/{meetingId}")
+    @GetMapping("meetings/{meetingId}")
     Meeting one(@PathVariable String meetingId) {
         return meetingRepository.one(meetingId);
     }
