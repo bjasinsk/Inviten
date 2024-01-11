@@ -21,8 +21,7 @@ public class Meeting {
     private String id = UUID.randomUUID().toString();
 
     private String name;
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
     private List<Member> participants;
     private List<DateProposal> dateProposals;
     private List<Place> placeProposals;
@@ -48,17 +47,11 @@ public class Meeting {
     public String getName(){ return name; }
 
     public void setName(String name) { this.name = name; }
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
-    public void setDate(LocalDate date) {this.date = date;}
+    public void setDate(String date) {this.date = date;}
 
-    public LocalTime getTime() {
-        return time;
-    }
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
 
     public List<Member> getParticipants() { return participants; }
     public void setParticipants(List<Member> participants) {

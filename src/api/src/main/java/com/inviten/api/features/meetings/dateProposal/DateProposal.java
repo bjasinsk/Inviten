@@ -10,8 +10,9 @@ import java.util.List;
 @DynamoDbBean
 public class DateProposal {
     private String id;
-    private LocalDate proposedDate;
-    private LocalTime proposedTime;
+
+    private String proposedDate;
+
     private String proposedBy;
     private List<String> votes = new ArrayList<>();
 
@@ -27,21 +28,14 @@ public class DateProposal {
         this.id = id;
     }
 
-    public LocalDate getProposedDate() {
+    public String getProposedDate() {
         return proposedDate;
     }
 
-    public void setProposedDate(LocalDate proposedDate) {
+    public void setProposedDate(String proposedDate) {
         this.proposedDate = proposedDate;
     }
 
-    public LocalTime getProposedTime() {
-        return proposedTime;
-    }
-
-    public void setProposedTime(LocalTime proposedTime) {
-        this.proposedTime = proposedTime;
-    }
 
     public String getProposedBy() {
         return proposedBy;
