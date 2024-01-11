@@ -11,7 +11,7 @@ public interface IMeetingRepository {
 
     public Meeting createAndSave(Meeting meeting);
 
-    public void addMember(String meetingId, Member member);
+    public void invite(String meetingId, String phoneNumber);
 
     public void deleteMember(String meetingId, String phoneNumber);
 
