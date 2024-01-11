@@ -1,6 +1,8 @@
 package com.inviten.api.features.meetings.dateProposal;
 
 import com.inviten.api.features.meetings.IMeetingRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import com.inviten.api.features.meetings.Meeting;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -63,6 +65,11 @@ public class DateProposalRepository implements IDateProposalRepository {
 
     @Override
     public void addDateProposal(String meetingId, DateProposal dateProposal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String phoneNumber = (String) authentication.getPrincipal();
+        dateProposal.setProposedBy(phoneNumber);
+
         try {
             Key key = Key.builder()
                     .partitionValue(meetingId)
@@ -109,7 +116,11 @@ public class DateProposalRepository implements IDateProposalRepository {
 
 
     @Override
-    public void addVote(String meetingId, String proposalId, String phoneNumber) {
+    public void addVote(String meetingId, String proposalId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String phoneNumber = (String) authentication.getPrincipal();
+
         Meeting meeting = meetingRepository.one(meetingId);
         if(meeting.getIsDateChosen()){
             return;
@@ -141,7 +152,11 @@ public class DateProposalRepository implements IDateProposalRepository {
     }
 
     @Override
-    public void removeVote(String meetingId, String proposalId, String phoneNumber) {
+    public void removeVote(String meetingId, String proposalId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String phoneNumber = (String) authentication.getPrincipal();
+
         Meeting meeting = meetingRepository.one(meetingId);
         if(meeting.getIsDateChosen()){
             return;

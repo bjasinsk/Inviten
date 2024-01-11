@@ -32,13 +32,13 @@ public class DateProposalController {
 
 
     @PostMapping("/{proposalId}/vote")
-    void addVote(@PathVariable String meetingId, @PathVariable String proposalId, @RequestBody String phoneNumber){
-        dateProposalRepository.addVote(meetingId, proposalId, phoneNumber);
+    void addVote(@PathVariable String meetingId, @PathVariable String proposalId){
+        dateProposalRepository.addVote(meetingId, proposalId);
     }
 
-    @PostMapping("/{proposalId}/unvote/{phoneNumber}")
-    void removeVote(@PathVariable String meetingId, @PathVariable String proposalId, @PathVariable String phoneNumber){
-        dateProposalRepository.removeVote(meetingId, proposalId, phoneNumber);
+    @PostMapping("/{proposalId}/unvote")
+    void removeVote(@PathVariable String meetingId, @PathVariable String proposalId){
+        dateProposalRepository.removeVote(meetingId, proposalId);
     }
 
     @PostMapping("/{proposalId}/schedule")

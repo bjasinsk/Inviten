@@ -12,9 +12,9 @@ public interface IDateProposalRepository {
 
     void removeDateProposal(String meetingId, String proposalId);
 
-    void addVote(String meetingId, String proposalId, String phoneNumber);
+    void addVote(String meetingId, String proposalId);
 
-    void removeVote(String meetingId, String proposalId, String phoneNumber);
+    void removeVote(String meetingId, String proposalId);
 
     void confirmDate(String meetingId, String proposalId);
 }

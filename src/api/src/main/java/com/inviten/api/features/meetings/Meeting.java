@@ -3,6 +3,8 @@ package com.inviten.api.features.meetings;
 
 import com.inviten.api.features.meetings.dateProposal.DateProposal;
 import com.inviten.api.features.meetings.placeProposal.Place;
+import com.inviten.api.features.notes.Note;
+import com.inviten.api.features.users.User;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -26,6 +28,8 @@ public class Meeting {
     private boolean isDateChosen = false;
 
     private Place place;
+
+    List<Note> notes;
 
     @DynamoDbPartitionKey
     public String getId() {
@@ -89,5 +93,10 @@ public class Meeting {
     public Place getPlace() {return place; }
 
     public void setPlace(Place place) {this.place = place;}
+
+    public List<Note> getNotes() {return notes;}
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
 }
 

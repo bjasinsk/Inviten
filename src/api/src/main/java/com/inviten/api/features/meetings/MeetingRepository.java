@@ -1,26 +1,31 @@
 package com.inviten.api.features.meetings;
 
-import com.inviten.api.features.users.UserMeetings;
+import com.inviten.api.authorization.hashing.PhoneHash;
+import com.inviten.api.features.users.User;
 import com.inviten.api.features.users.UserMeetingsRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import com.inviten.api.exception.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MeetingRepository implements IMeetingRepository {
     private final DynamoDbTable<Meeting> table;
-    private final DynamoDbTable<UserMeetings> usersTable;
+    private final DynamoDbTable<User> usersTable;
 
     private final UserMeetingsRepository userRepository;
 
 
     public MeetingRepository(DynamoDbEnhancedClient client) {
         table = client.table("meetings", TableSchema.fromBean(Meeting.class));
-        usersTable = client.table("users", TableSchema.fromBean(UserMeetings.class));
+        usersTable = client.table("users", TableSchema.fromBean(User.class));
         this.userRepository = new UserMeetingsRepository(client);
     }
 
@@ -35,52 +40,82 @@ public class MeetingRepository implements IMeetingRepository {
 
     @Override
     public void create(Meeting meeting) {
+
         table.putItem(meeting);
     }
     @Override
     public Meeting createAndSave(Meeting meeting){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String phoneNumber = (String) authentication.getPrincipal();
+
+        // stworzenie mebera ownera
+        Member member = new Member();
+        member.setPhoneNumber(phoneNumber);
+        Role role = new Role();
+        member.setRole(role.getOwnerRole());
+
+        // ustawienie nowych participantów
+        List<Member> participants = meeting.getParticipants();
+        if(participants == null){
+            participants = List.of(member);
+        }else {
+            participants.add(member);
+        }
+        meeting.setParticipants(participants);
+
+        // aktualizowanie usera
+        User user = userRepository.show(phoneNumber);
+        List<String> meetingsIds = user.getMeetingsIds();
+        meetingsIds = List.of(meeting.getId());
+        user.setMeetingsIds(meetingsIds);
+
+        // dodanie do tabeli users
+        usersTable.putItem(user);
+
+        // dodanie do tabeli meetings
         create(meeting);
         return meeting;
     }
 
-    @Override
-    public void addMember(String meetingId, Member member){
 
+    @Override
+    public void invite(String meetingId, String phoneNumber){
         Meeting meeting = one(meetingId);
         if (meeting == null) {
             throw new NotFoundException();
         }
 
-        String UserPhoneNumber = member.getPhoneNumber();
+        PhoneHash phoneHash = new PhoneHash();
 
-        UserMeetings user = userRepository.show(UserPhoneNumber);
-        if (user == null) {
-            user = new UserMeetings();
-            user.setPhoneNumber(UserPhoneNumber);
-            userRepository.create(user);
-        }
+        try {
+            String hashedPhoneNumber = phoneHash.hashPhoneNumber(phoneNumber);
 
-        // lista spotkań MeeeetingUsera
-        List<String> userMeetings = user.getMeetingsIds();
-        if(userMeetings == null){
-            userMeetings = List.of(meetingId);
-        }
-        else{
-            userMeetings.add(meetingId);
-        }
+            User user = userRepository.show(hashedPhoneNumber);
+            if (user == null) {
+                user = new User();
+                user.setPhoneNumber(hashedPhoneNumber);
+                userRepository.create(user);
+            }
 
-        List<Member> participants = meeting.getParticipants();
-        if (participants == null) {
-            participants = List.of(member);
+            List<String> userMeetings = user.getMeetingsIds() != null ? new ArrayList<>(user.getMeetingsIds()) : new ArrayList<>();
+            if (!userMeetings.contains(meetingId)) {
+                userMeetings.add(meetingId);
+                user.setMeetingsIds(userMeetings);
+                usersTable.putItem(user);
+            }
+
+            List<Member> participants = meeting.getParticipants() != null ? new ArrayList<>(meeting.getParticipants()) : new ArrayList<>();
+            Member member = new Member();
+            member.setPhoneNumber(hashedPhoneNumber);
+            if (!participants.contains(member)) {
+                participants.add(member);
+                meeting.setParticipants(participants);
+                table.putItem(meeting);
+            }
+        } catch (Exception e) {
+
         }
-        else {
-            participants.add(member);
-        }
-        // ustawiamy listę spotkań
-        user.setMeetingsIds(userMeetings);
-        meeting.setParticipants(participants);
-        table.putItem(meeting);
-        usersTable.putItem(user);
     }
 
 
@@ -91,7 +126,7 @@ public class MeetingRepository implements IMeetingRepository {
             throw new NotFoundException();
         }
 
-        UserMeetings user = userRepository.show(phoneNumber);
+        User user = userRepository.show(phoneNumber);
 
         List<String> userMeetings = user.getMeetingsIds();
         int indexOfUserMeeting = -1;
@@ -127,5 +162,50 @@ public class MeetingRepository implements IMeetingRepository {
     @Override
     public void put(Meeting meeting) {
         table.putItem(meeting);
+    }
+
+    @Override
+    public void leaveMeeting(@PathVariable String meetingId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String phoneNumber = (String) authentication.getPrincipal();
+
+        Meeting meeting = one(meetingId);
+        if (meeting == null) {
+            throw new NotFoundException();
+        }
+
+        User user = userRepository.show(phoneNumber);
+
+        List<String> userMeetings = user.getMeetingsIds();
+        int indexOfUserMeeting = -1;
+        for(int j = 0; j < userMeetings.size(); j++){
+            String userMeetingId = userMeetings.get(j);
+            if(userMeetingId.equals(meetingId)){
+                indexOfUserMeeting = j;
+                break;
+            }
+        }
+
+        if(indexOfUserMeeting != -1){
+            userMeetings.remove(indexOfUserMeeting);
+            user.setMeetingsIds(userMeetings);
+            usersTable.putItem(user);
+        }
+
+        List<Member> participants = meeting.getParticipants();
+        int indexOfMember = -1;
+        for (int i = 0; i < participants.size(); i++) {
+            Member member = participants.get(i);
+            if (phoneNumber.equals(member.getPhoneNumber())) {
+                indexOfMember = i;
+                break;
+            }
+        }
+        if (indexOfMember != -1){
+            participants.remove(indexOfMember);
+            meeting.setParticipants(participants);
+            table.putItem(meeting);
+        }
     }
 }
