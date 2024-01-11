@@ -3,6 +3,8 @@ package com.inviten.api.features.meetings;
 import com.inviten.api.authorization.hashing.PhoneHash;
 import com.inviten.api.features.users.User;
 import com.inviten.api.features.users.UserMeetingsRepository;
+import com.inviten.api.generator.NameGenerator;
+import org.apache.catalina.filters.RateLimitFilter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import com.inviten.api.exception.NotFoundException;
 
+import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +57,8 @@ public class MeetingRepository implements IMeetingRepository {
         member.setPhoneNumber(phoneNumber);
         Role role = new Role();
         member.setRole(role.getOwnerRole());
+        NameGenerator nameGenerator = new NameGenerator();
+        member.setNick(nameGenerator.getRandomWord());
 
         // ustawienie nowych participantów
         List<Member> participants = meeting.getParticipants();
@@ -87,6 +92,7 @@ public class MeetingRepository implements IMeetingRepository {
         }
 
         PhoneHash phoneHash = new PhoneHash();
+        NameGenerator nameGenerator = new NameGenerator();
 
         try {
             String hashedPhoneNumber = phoneHash.hashPhoneNumber(phoneNumber);
@@ -108,6 +114,8 @@ public class MeetingRepository implements IMeetingRepository {
             List<Member> participants = meeting.getParticipants() != null ? new ArrayList<>(meeting.getParticipants()) : new ArrayList<>();
             Member member = new Member();
             member.setPhoneNumber(hashedPhoneNumber);
+            member.setRole(Role.getGuestRole());
+            member.setNick(nameGenerator.getRandomWord());
             if (!participants.contains(member)) {
                 participants.add(member);
                 meeting.setParticipants(participants);
