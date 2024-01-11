@@ -1,6 +1,7 @@
 package com.inviten.api.features.meetings;
 
 
+import com.inviten.api.authorization.converter.TimeConverter;
 import com.inviten.api.features.meetings.dateProposal.DateProposal;
 import com.inviten.api.features.meetings.placeProposal.Place;
 import com.inviten.api.features.notes.Note;
@@ -9,6 +10,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -31,6 +33,8 @@ public class Meeting {
     private Place place;
 
     List<Note> notes;
+
+    private String createdAt;
 
     @DynamoDbPartitionKey
     public String getId() {
@@ -98,6 +102,13 @@ public class Meeting {
     public List<Note> getNotes() {return notes;}
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }
 
