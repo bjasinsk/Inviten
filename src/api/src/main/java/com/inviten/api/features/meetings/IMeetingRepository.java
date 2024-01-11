@@ -18,4 +18,9 @@ public interface IMeetingRepository {
     public void put(Meeting meeting);
 
     public void leaveMeeting(String meetingId);
+
+    public void promoteMember(String meetingId, String userId);
+
+    public void degradateMember (String meetingId, String userId);
+
 }
