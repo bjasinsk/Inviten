@@ -7,6 +7,7 @@ import {Text} from 'react-native-ui-lib';
 import {ParticipantInviteButton} from './ParticipantInviteButton';
 import {useAuthStore} from '../../../lib/auth/authStore';
 import {isMeetingAdmin} from '../../../utils/meetingHelpers';
+import {classNames} from '../../../utils/styleHelpers';
 
 const getShortName = (participant: Participant) =>
     participant.nick != null && participant.nick.length > 0 ? participant.nick[0] : participant.phoneNumber[0];
@@ -29,9 +30,14 @@ export const ParticipantsList = ({meeting}: {meeting: Meeting}) => {
             <LargeAvatar
                 shortName={isMe(item) ? 'I' : getShortName(item)}
                 badge={isMeetingAdmin(meeting, item.phoneNumber) ? item.role : null}
+                highlighted={isMe(item)}
             />
             <View className="mt-3 px-2">
-                <Text className="text-gray-100 text-xs font-semibold flex text-center flex-wrap w-12">
+                <Text
+                    className={classNames(
+                        'text-xs font-semibold flex text-center flex-wrap w-12',
+                        isMe(item) ? 'text-violet-400' : 'text-gray-100',
+                    )}>
                     {isMe(item) ? 'Me' : getTruncatedNick(item.nick)}
                 </Text>
             </View>
