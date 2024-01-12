@@ -114,27 +114,43 @@ public class MeetingRepository implements IMeetingRepository {
                 userRepository.create(user);
             }
 
-            List<String> userMeetings = user.getMeetingsIds() != null ? new ArrayList<>(user.getMeetingsIds()) : new ArrayList<>();
-            if (!userMeetings.contains(meetingId)) {
+            // lista spotkań MeeeetingUsera
+            List<String> userMeetings = user.getMeetingsIds();
+            if(userMeetings == null){
+                userMeetings = List.of(meetingId);
+            }
+            else{
                 userMeetings.add(meetingId);
-                user.setMeetingsIds(userMeetings);
-                usersTable.putItem(user);
             }
 
-            List<Member> participants = meeting.getParticipants() != null ? new ArrayList<>(meeting.getParticipants()) : new ArrayList<>();
+
             Member member = new Member();
             member.setPhoneNumber(hashedPhoneNumber);
             member.setRole(Role.getGuestRole());
             member.setNick(nameGenerator.getRandomWord());
-            if (!participants.contains(member)) {
+
+            List<Member> participants = meeting.getParticipants();
+            if (participants == null) {
+                participants = List.of(member);
+            }else {
                 participants.add(member);
-                meeting.setParticipants(participants);
-                table.putItem(meeting);
             }
+            user.setMeetingsIds(userMeetings);
+            meeting.setParticipants(participants);
+            usersTable.putItem(user);
+            table.putItem(meeting); //kom  1
+
+
+
         } catch (Exception e) {
 
         }
     }
+
+    ///
+
+
+
 
 
     @Override
