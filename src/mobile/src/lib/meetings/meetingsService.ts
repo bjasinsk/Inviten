@@ -24,15 +24,17 @@ export const getUserMeeting = async (token: string, meetingId: string) => {
 };
 
 export const addUserMeeting = async (token: string, meeting: Meeting) => {
-    await apiClient.post('/meetings', meeting, {
+    const response = await apiClient.post('/meetings', meeting, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
+
+    return response.data;
 };
 
 export const addUserDateProposal = async (token: string, meetingId: string, proposal: DateProposal) => {
-    await apiClient.put(
+    const response = await apiClient.put(
         `/meetings/${meetingId}/dates`,
         {...proposal},
         {
@@ -41,10 +43,12 @@ export const addUserDateProposal = async (token: string, meetingId: string, prop
             },
         },
     );
+
+    return response.data;
 };
 
 export const voteOnUserDateProposal = async (token: string, meetingId: string, proposalId: string) => {
-    await apiClient.post(
+    const response = await apiClient.post(
         `/meetings/${meetingId}/dates/${proposalId}/vote`,
         {},
         {
@@ -53,10 +57,11 @@ export const voteOnUserDateProposal = async (token: string, meetingId: string, p
             },
         },
     );
+    return response.data;
 };
 
 export const unvoteOnUserDateProposal = async (token: string, meetingId: string, proposalId: string) => {
-    await apiClient.post(
+    const response = await apiClient.post(
         `/meetings/${meetingId}/dates/${proposalId}/unvote`,
         {},
         {
@@ -65,10 +70,11 @@ export const unvoteOnUserDateProposal = async (token: string, meetingId: string,
             },
         },
     );
+    return response.data;
 };
 
 export const scheduleUserDateProposal = async (token: string, meetingId: string, proposalId: string) => {
-    await apiClient.post(
+    const response = await apiClient.post(
         `/meetings/${meetingId}/dates/${proposalId}/schedule`,
         {},
         {
@@ -77,10 +83,11 @@ export const scheduleUserDateProposal = async (token: string, meetingId: string,
             },
         },
     );
+    return response.data;
 };
 
 export const addUserPlaceProposal = async (token: string, meetingId: string, proposal: PlaceProposal) => {
-    await apiClient.put(
+    const reponse = await apiClient.put(
         `/meetings/${meetingId}/places`,
         {...proposal},
         {
@@ -89,10 +96,12 @@ export const addUserPlaceProposal = async (token: string, meetingId: string, pro
             },
         },
     );
+
+    return reponse.data;
 };
 
 export const voteOnUserPlaceProposal = async (token: string, meetingId: string, proposalId: string) => {
-    await apiClient.post(
+    const response = await apiClient.post(
         `/meetings/${meetingId}/places/${proposalId}/vote`,
         {},
         {
@@ -101,10 +110,12 @@ export const voteOnUserPlaceProposal = async (token: string, meetingId: string, 
             },
         },
     );
+
+    return response.data;
 };
 
 export const unvoteOnUserPlaceProposal = async (token: string, meetingId: string, proposalId: string) => {
-    await apiClient.post(
+    const response = await apiClient.post(
         `/meetings/${meetingId}/places/${proposalId}/unvote`,
         {},
         {
@@ -113,10 +124,11 @@ export const unvoteOnUserPlaceProposal = async (token: string, meetingId: string
             },
         },
     );
+    return response.data;
 };
 
 export const pickUserPlaceProposal = async (token: string, meetingId: string, proposalId: string) => {
-    await apiClient.post(
+    const response = await apiClient.post(
         `/meetings/${meetingId}/places/${proposalId}/pick`,
         {},
         {
@@ -125,10 +137,13 @@ export const pickUserPlaceProposal = async (token: string, meetingId: string, pr
             },
         },
     );
+    return response.data;
 };
 
 export const inviteUser = async (token: string, meetingId: string, phoneNumber: string) => {
-    await apiClient.put(
+    console.log(phoneNumber);
+
+    const response = await apiClient.put(
         `/meetings/${meetingId}/users/${phoneNumber}}`,
         {phoneNumber},
         {
@@ -137,4 +152,5 @@ export const inviteUser = async (token: string, meetingId: string, phoneNumber: 
             },
         },
     );
+    return response.data;
 };
