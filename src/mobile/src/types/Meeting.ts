@@ -7,8 +7,8 @@ export type Meeting = {
     name: string;
     participants: Participant[];
     createdAt: string;
-    date: string;
-    place: PlaceProposal;
+    date: string | null;
+    place: PlaceProposal | null;
     isPlaceChosen: boolean;
     isDateChosen: boolean;
     dateProposals: DateProposal[];

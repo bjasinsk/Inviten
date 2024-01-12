@@ -29,7 +29,7 @@ type MeetingsState = {
     inviteUser: (token: string, meetingId: string, phoneNumber: string) => Promise<void>;
 };
 
-export const useMeetingsStore = create<MeetingsState>(set => ({
+export const useMeetingsStore = create<MeetingsState>((set, get) => ({
     meetings: [],
     fetchMeetings: async (token: string) => {
         const meetings = await getUserMeetings(token);
@@ -37,8 +37,8 @@ export const useMeetingsStore = create<MeetingsState>(set => ({
     },
     addMeeting: async (token: string, meeting: any) => {
         await addUserMeeting(token, meeting);
-        const meetings = await getUserMeetings(token);
-        set({meetings: meetings});
+        const meetinds = [...get().meetings, meeting];
+        set({meetings: meetinds});
     },
     addDateProposal: async (token: string, meetingId: string, proposal: DateProposal) => {
         await addUserDateProposal(token, meetingId, proposal);

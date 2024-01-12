@@ -1,4 +1,5 @@
 import {DateProposal} from '../../types/Date/DateProposal';
+import {Meeting} from '../../types/Meeting';
 import {PlaceProposal} from '../../types/Place/PlaceProposal';
 import {apiClient} from '../api/apiClient';
 
@@ -22,7 +23,7 @@ export const getUserMeeting = async (token: string, meetingId: string) => {
     return response.data;
 };
 
-export const addUserMeeting = async (token: string, meeting: any) => {
+export const addUserMeeting = async (token: string, meeting: Meeting) => {
     await apiClient.post('/meetings', meeting, {
         headers: {
             Authorization: `Bearer ${token}`,
