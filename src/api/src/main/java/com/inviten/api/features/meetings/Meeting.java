@@ -14,6 +14,11 @@ import java.util.Date;
 import java.util.List;
 import java.time.LocalTime;
 import java.util.UUID;
+import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+
+
 
 
 @DynamoDbBean
@@ -34,6 +39,12 @@ public class Meeting {
     List<Note> notes;
 
     private String createdAt;
+
+    private String icon;
+
+    private Integer duration;
+
+    private boolean isFinished;
 
     @DynamoDbPartitionKey
     public String getId() {
@@ -103,5 +114,43 @@ public class Meeting {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public boolean getIsFinished(){
+        if (isDateChosen) {
+            LocalDateTime currentDate = LocalDateTime.now();
+
+            DateTimeFormatter iso8601Format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            LocalDateTime parsedDate = LocalDateTime.parse(date, iso8601Format);
+
+            if (duration != null) {
+                LocalDateTime totalDate = parsedDate.plusMinutes(duration);
+                if (totalDate.isBefore(currentDate)) {
+                    return true;
+                }
+            } else {
+                if (parsedDate.isBefore(currentDate)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
