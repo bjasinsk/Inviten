@@ -23,4 +23,8 @@ public interface IMeetingRepository {
 
     public void degradateMember (String meetingId, String userId);
 
+    public String addIcon (String meetingId, String iconName);
+
+    public void deleteIcon (String meetingId);
+
 }

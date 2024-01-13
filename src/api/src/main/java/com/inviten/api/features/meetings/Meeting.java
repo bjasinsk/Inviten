@@ -35,6 +35,8 @@ public class Meeting {
 
     private String createdAt;
 
+    private String icon;
+
     @DynamoDbPartitionKey
     public String getId() {
         return id;
@@ -102,6 +104,14 @@ public class Meeting {
     }
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
 
