@@ -13,4 +13,6 @@ export type Meeting = {
     isDateChosen: boolean;
     dateProposals: DateProposal[];
     placeProposals: PlaceProposal[];
+    icon: string | null;
+    isFinished: boolean;
 };

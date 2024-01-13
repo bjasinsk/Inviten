@@ -154,3 +154,16 @@ export const inviteUser = async (token: string, meetingId: string, phoneNumber: 
     );
     return response.data;
 };
+
+export const changeUserMeetingIcon = async (token: string, meetingId: string, icon: string) => {
+    const response = await apiClient.put(
+        `/meetings/${meetingId}/icon/${icon}`,
+        {icon},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+    return response.data;
+};
