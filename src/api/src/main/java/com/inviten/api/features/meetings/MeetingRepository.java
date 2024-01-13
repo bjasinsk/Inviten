@@ -354,5 +354,25 @@ public class MeetingRepository implements IMeetingRepository {
         table.putItem(meeting);
     }
 
+    @Override
+    public Integer addDuration(String meetingId, Integer durationMinutes){
+        Meeting meeting = one(meetingId);
+        if (meeting == null) {
+            throw new NotFoundException();
+        }
+        meeting.setDuration(durationMinutes);
+        table.putItem(meeting);
+        return null;
+    }
+
+    @Override
+    public void deleteDuration(String meetingId){
+        Meeting meeting = one(meetingId);
+        if (meeting == null) {
+            throw new NotFoundException();
+        }
+        meeting.setDuration(null);
+        table.putItem(meeting);
+    }
 
 }

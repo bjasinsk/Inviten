@@ -27,4 +27,8 @@ public interface IMeetingRepository {
 
     public void deleteIcon (String meetingId);
 
+    public Integer addDuration (String meetingId, Integer durationMinutes);
+
+    public void deleteDuration (String meetingId);
+
 }
