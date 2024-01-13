@@ -3,6 +3,7 @@ import {
     addUserDateProposal,
     addUserMeeting,
     addUserPlaceProposal,
+    changeUserMeetingDuration,
     changeUserMeetingIcon,
     getUserMeetings,
     inviteUser,
@@ -31,6 +32,7 @@ type MeetingsState = {
     pickPlaceProposal: (token: string, meetingId: string, proposalId: string) => Promise<void>;
     inviteUser: (token: string, meetingId: string, phoneNumber: string) => Promise<void>;
     changeIcon: (token: string, meetingId: string, icon: string) => Promise<void>;
+    changeDuration: (token: string, meetingId: string, duration: number) => Promise<void>;
     updateMeeting: (meeting: Meeting) => void;
 };
 
@@ -108,6 +110,12 @@ export const useMeetingsStore = create<MeetingsState>((set, get) => ({
         const meeting = get().meetings.find(m => m.id === meetingId);
         await changeUserMeetingIcon(token, meetingId, icon);
         meeting.icon = icon;
+        get().updateMeeting(meeting);
+    },
+    changeDuration: async (token: string, meetingId: string, duration: number) => {
+        const meeting = get().meetings.find(m => m.id === meetingId);
+        await changeUserMeetingDuration(token, meetingId, duration);
+        meeting.duration = duration;
         get().updateMeeting(meeting);
     },
     updateMeeting: (meeting: Meeting | undefined) => {

@@ -15,4 +15,5 @@ export type Meeting = {
     placeProposals: PlaceProposal[];
     icon: string | null;
     isFinished: boolean;
+    duration: number;
 };

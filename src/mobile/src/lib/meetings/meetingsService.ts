@@ -167,3 +167,16 @@ export const changeUserMeetingIcon = async (token: string, meetingId: string, ic
     );
     return response.data;
 };
+
+export const changeUserMeetingDuration = async (token: string, meetingId: string, duration: number) => {
+    const response = await apiClient.put(
+        `/meetings/${meetingId}/duration/${duration}`,
+        {duration},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+    return response.data;
+};
