@@ -15,5 +15,6 @@ export type Meeting = {
     placeProposals: PlaceProposal[];
     icon: string | null;
     isFinished: boolean;
+    isRunning: boolean;
     duration: number;
 };
